@@ -424,6 +424,13 @@ function finalizeSpin(winningText) {
     sound.playBallPocketDrop();
     state.isSpinning = false;
 
+    // Play winner background music
+    if (!window.winAudio) {
+        window.winAudio = new Audio('musicafondo.mp4');
+    }
+    window.winAudio.currentTime = 0;
+    window.winAudio.play().catch(e => console.log('Audio play blocked:', e));
+
     const badge = document.getElementById('lastNumberBadge');
     badge.textContent = winningText;
 
@@ -468,6 +475,12 @@ window.addEventListener('DOMContentLoaded', () => {
             modal.classList.add('opacity-0', 'pointer-events-none');
             card.classList.remove('scale-100');
             card.classList.add('scale-95');
+
+            // Stop winner music
+            if (window.winAudio) {
+                window.winAudio.pause();
+                window.winAudio.currentTime = 0;
+            }
         }
     });
 
