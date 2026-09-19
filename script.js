@@ -334,25 +334,25 @@ function spin() {
     state.lastFretPassed = -1;
 
     const startTime = performance.now();
-    const spinDuration = 5000;
+    const spinDuration = 7500; // Increased to 7.5 seconds for maximum suspense
 
     function animateSpin(currentTime) {
         const elapsed = currentTime - startTime;
         const progress = Math.min(1, elapsed / spinDuration);
 
         state.wheelAngle += state.wheelSpeed;
-        state.wheelSpeed *= 0.9982;
+        state.wheelSpeed *= 0.9988; // Keep wheel moving longer
 
-        if (progress < 0.65) {
+        if (progress < 0.60) {
             state.ballAngle += state.ballSpeed;
             state.ballSpeed *= 0.995;
             if (Math.random() < 0.2) sound.playBallRollWhir(0.08);
-        } else if (progress < 0.92) {
+        } else if (progress < 0.93) {
             state.ballState = 'BOUNCING';
             state.ballAngle += state.ballSpeed;
             state.ballSpeed *= 0.985;
 
-            state.ballRadiusFactor = 0.88 - ((progress - 0.65) / 0.27) * 0.24;
+            state.ballRadiusFactor = 0.88 - ((progress - 0.60) / 0.33) * 0.24;
 
             const currentFret = Math.floor(Math.abs(state.ballAngle - state.wheelAngle) / pocketAngle) % numPockets;
             if (currentFret !== state.lastFretPassed) {
@@ -368,8 +368,6 @@ function spin() {
                 state.targetPocketIndex = Math.round(relAngle / pocketAngle) % numPockets;
             }
 
-            state.ballAngle += state.wheelSpeed;
-
             const targetAngleOnWheel = state.targetPocketIndex * pocketAngle;
             const finalAngle = state.wheelAngle + targetAngleOnWheel;
 
@@ -377,10 +375,20 @@ function spin() {
             if (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
             if (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
 
-            state.ballAngle += angleDiff * 0.15;
-            state.ballRadiusFactor = 0.64;
+            // Physics-based settling: Spring + Friction Damper
+            // 1. Friction: The ball slowly catches up to the wheel's rotation speed
+            state.ballSpeed += (state.wheelSpeed - state.ballSpeed) * 0.05;
+            
+            // 2. Spring: The pocket gently pulls the ball towards its center
+            state.ballSpeed += angleDiff * 0.004;
 
-            if (progress > 0.96 && Math.random() < 0.15) sound.playBallPocketDrop();
+            // Apply the natural speed
+            state.ballAngle += state.ballSpeed;
+            
+            // Slowly let the ball slide down into the pocket radially
+            state.ballRadiusFactor += (0.64 - state.ballRadiusFactor) * 0.05;
+
+            if (progress > 0.95 && Math.random() < 0.15) sound.playBallPocketDrop();
         }
 
         drawWheel();
