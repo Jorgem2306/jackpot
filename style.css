@@ -1,0 +1,72 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(rgba(15, 0, 0, 0.6), rgba(0, 0, 0, 0.85)), url('fondo akuma.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #f3f4f6;
+    min-height: 100vh;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.font-creepster {
+    font-family: 'Creepster', cursive;
+}
+
+.font-bebas {
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+.font-special-elite {
+    font-family: 'Special Elite', monospace;
+}
+
+/* Custom Blood/Grunge Glass Card */
+.glass-panel {
+    background: rgba(15, 0, 0, 0.75);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(200, 0, 0, 0.3);
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.15), inset 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+@keyframes neon-flicker {
+
+    0%,
+    18%,
+    22%,
+    25%,
+    53%,
+    57%,
+    100% {
+        opacity: 1;
+        text-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 30px rgba(255, 0, 0, 0.6);
+    }
+
+    20%,
+    24%,
+    55% {
+        opacity: 0.3;
+        text-shadow: none;
+    }
+}
+
+.animate-flicker {
+    animation: neon-flicker 4s infinite alternate;
+}
+
+@keyframes float-character {
+    0%, 100% { transform: translateY(0px) scale(1); }
+    50% { transform: translateY(-15px) scale(1.02); }
+}
+
+.animate-float {
+    animation: float-character 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+    animation: float-character 6s ease-in-out infinite;
+    animation-delay: -3s;
+}
