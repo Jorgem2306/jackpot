@@ -172,7 +172,12 @@ const state = {
     ballRadiusFactor: 0.88,
     ballState: 'IDLE',
     lastFretPassed: -1,
-    targetPocketIndex: null
+    targetPocketIndex: null,
+    isDragging: false,
+    lastAngle: 0,
+    angularVelocity: 0,
+    lastTime: 0,
+    dragTotalAngle: 0
 };
 
 function drawWheel() {
@@ -313,7 +318,7 @@ function drawWheel() {
 
 let animationFrameId = null;
 
-function spin() {
+function spin(initialVelocity = null) {
     if (state.isSpinning) return;
 
     state.isSpinning = true;
@@ -327,8 +332,16 @@ function spin() {
 
     state.targetPocketIndex = null;
 
-    state.wheelSpeed = 0.05 + Math.random() * 0.02;
-    state.ballSpeed = -(0.25 + Math.random() * 0.08);
+    if (initialVelocity !== null) {
+        const speedMag = Math.min(Math.max(Math.abs(initialVelocity), 0.04), 0.15);
+        state.wheelSpeed = Math.sign(initialVelocity) * speedMag;
+    } else {
+        // Default tap spin
+        const dir = Math.random() < 0.5 ? 1 : -1;
+        state.wheelSpeed = dir * (0.05 + Math.random() * 0.02);
+    }
+
+    state.ballSpeed = -Math.sign(state.wheelSpeed) * (0.25 + Math.random() * 0.08);
     state.ballRadiusFactor = 0.88;
     state.ballState = 'ROLLING';
     state.lastFretPassed = -1;
@@ -341,7 +354,11 @@ function spin() {
         const progress = Math.min(1, elapsed / spinDuration);
 
         state.wheelAngle += state.wheelSpeed;
-        state.wheelSpeed *= 0.9988; // Keep wheel moving longer
+        
+        // Increase friction as the spin progresses so the wheel comes to a smooth, near-complete stop
+        // This prevents the wheel from spinning fast at the end, which causes dizziness
+        const wheelFriction = 0.998 - (progress * 0.015);
+        state.wheelSpeed *= wheelFriction;
 
         if (progress < 0.60) {
             state.ballAngle += state.ballSpeed;
@@ -454,7 +471,73 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    canvas.addEventListener('click', () => {
-        if (!state.isSpinning) spin();
-    });
+    // DRAG TO SPIN LOGIC
+    function getAngleFromEvent(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        const x = clientX - rect.left - rect.width / 2;
+        const y = clientY - rect.top - rect.height / 2;
+        return Math.atan2(y, x);
+    }
+
+    function startDrag(e) {
+        if (state.isSpinning) return;
+        state.isDragging = true;
+        state.lastAngle = getAngleFromEvent(e);
+        state.lastTime = performance.now();
+        state.angularVelocity = 0;
+        state.dragTotalAngle = 0;
+    }
+
+    function drag(e) {
+        if (!state.isDragging || state.isSpinning) return;
+        e.preventDefault(); // Prevent scrolling while dragging wheel
+        
+        const currentAngle = getAngleFromEvent(e);
+        const currentTime = performance.now();
+        
+        let deltaAngle = currentAngle - state.lastAngle;
+        if (deltaAngle > Math.PI) deltaAngle -= Math.PI * 2;
+        if (deltaAngle < -Math.PI) deltaAngle += Math.PI * 2;
+        
+        state.wheelAngle += deltaAngle;
+        state.dragTotalAngle += Math.abs(deltaAngle);
+        
+        const deltaTime = currentTime - state.lastTime;
+        if (deltaTime > 0) {
+            // Calculate velocity (angle per ~16ms frame)
+            state.angularVelocity = deltaAngle / deltaTime * 16.66; 
+        }
+        
+        state.lastAngle = currentAngle;
+        state.lastTime = currentTime;
+        
+        drawWheel();
+    }
+
+    function endDrag(e) {
+        if (!state.isDragging) return;
+        state.isDragging = false;
+        
+        if (state.isSpinning) return;
+
+        if (state.dragTotalAngle < 0.05) {
+            // Treat as a click if they didn't move it much
+            spin(); 
+        } else if (Math.abs(state.angularVelocity) > 0.01) {
+            // Trigger actual spin based on flick speed
+            spin(state.angularVelocity);
+        }
+    }
+
+    // Mouse events
+    canvas.addEventListener('mousedown', startDrag);
+    window.addEventListener('mousemove', drag);
+    window.addEventListener('mouseup', endDrag);
+
+    // Touch events for mobile
+    canvas.addEventListener('touchstart', startDrag, {passive: false});
+    window.addEventListener('touchmove', drag, {passive: false});
+    window.addEventListener('touchend', endDrag);
 });
