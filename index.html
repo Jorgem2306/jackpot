@@ -8,7 +8,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Creepster&family=Montserrat:wght@400;700;900&family=Special+Elite&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Creepster&family=Montserrat:wght@400;700;900&family=Special+Elite&display=swap"
+        rel="stylesheet">
 
     <style>
         body {
@@ -28,7 +30,7 @@
         .font-creepster {
             font-family: 'Creepster', cursive;
         }
-        
+
         .font-bebas {
             font-family: 'Bebas Neue', sans-serif;
         }
@@ -42,16 +44,26 @@
             background: rgba(15, 0, 0, 0.75);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(200, 0, 0, 0.3);
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.15), inset 0 0 20px rgba(0,0,0,0.8);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.15), inset 0 0 20px rgba(0, 0, 0, 0.8);
         }
-        
+
 
         @keyframes neon-flicker {
-            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+
+            0%,
+            18%,
+            22%,
+            25%,
+            53%,
+            57%,
+            100% {
                 opacity: 1;
-                text-shadow: 0 0 10px rgba(255,0,0,0.8), 0 0 30px rgba(255,0,0,0.6);
+                text-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 30px rgba(255, 0, 0, 0.6);
             }
-            20%, 24%, 55% {
+
+            20%,
+            24%,
+            55% {
                 opacity: 0.3;
                 text-shadow: none;
             }
@@ -66,11 +78,15 @@
 <body class="p-2 md:p-6 flex flex-col items-center justify-center min-h-screen">
 
     <main class="w-full max-w-4xl flex flex-col items-center gap-6 relative z-10">
-        
+
         <!-- Header / Logo -->
         <div class="text-center mb-4">
-            <h1 class="font-creepster text-4xl sm:text-5xl md:text-7xl text-red-600 tracking-wider animate-flicker px-2">AKU & FRIENDS</h1>
-            <p class="font-special-elite text-xs sm:text-sm md:text-2xl text-gray-300 tracking-[0.1em] md:tracking-[0.2em] mt-2 md:mt-3 drop-shadow-md px-2">LA PURGA: TODO SALE A LA LUZ</p>
+            <h1
+                class="font-creepster text-4xl sm:text-5xl md:text-7xl text-red-600 tracking-wider animate-flicker px-2">
+                AKU & FRIENDS</h1>
+            <p
+                class="font-special-elite text-xs sm:text-sm md:text-2xl text-gray-300 tracking-[0.1em] md:tracking-[0.2em] mt-2 md:mt-3 drop-shadow-md px-2">
+                LA PURGA: TODO SALE A LA LUZ</p>
         </div>
 
         <!-- Canvas Roulette Wheel -->
@@ -79,12 +95,17 @@
             <!-- Canvas Container with 3D Bezel Frame -->
             <div class="relative w-full aspect-square max-w-[min(800px,70vh)] flex items-center justify-center">
                 <!-- Dark Iron Outer Rim Reflection -->
-                <div class="absolute inset-0 rounded-full bg-gradient-to-br from-[#1a1a1a] via-[#050505] to-[#2a2a2a] shadow-[0_15px_35px_rgba(0,0,0,1),inset_0_2px_4px_rgba(255,0,0,0.2)] border border-[#330000]"></div>
+                <div
+                    class="absolute inset-0 rounded-full bg-gradient-to-br from-[#1a1a1a] via-[#050505] to-[#2a2a2a] shadow-[0_15px_35px_rgba(0,0,0,1),inset_0_2px_4px_rgba(255,0,0,0.2)] border border-[#330000]">
+                </div>
                 <!-- Brass/Red Outer Track -->
-                <div class="absolute inset-[0.5%] rounded-full bg-gradient-to-tr from-[#3a0000] via-[#8b0000] to-[#1a0000] shadow-inner"></div>
+                <div
+                    class="absolute inset-[0.5%] rounded-full bg-gradient-to-tr from-[#3a0000] via-[#8b0000] to-[#1a0000] shadow-inner">
+                </div>
 
                 <!-- Canvas for spinning pocket rim and ball -->
-                <canvas id="rouletteCanvas" width="700" height="700" class="relative z-10 w-[98.5%] h-[98.5%] rounded-full cursor-pointer"></canvas>
+                <canvas id="rouletteCanvas" width="700" height="700"
+                    class="relative z-10 w-[98.5%] h-[98.5%] rounded-full cursor-pointer"></canvas>
             </div>
 
 
@@ -94,13 +115,23 @@
     </main>
 
     <!-- Result Modal Overlay -->
-    <div id="resultModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-500 p-4">
+    <div id="resultModal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-500 p-4">
         <!-- Result text Card -->
-        <div id="resultPreviewCard" class="flex flex-col md:flex-row items-center gap-3 md:gap-5 px-6 md:px-8 py-6 rounded-[1.5rem] bg-[#0c0c0c] border border-red-600 w-full max-w-[500px] justify-center shadow-[0_0_40px_rgba(255,0,0,0.4)] transform scale-95 transition-all duration-500 cursor-default text-center">
-            <span class="text-xl md:text-3xl uppercase text-[#64748b] font-bold font-bebas tracking-widest pt-1">DESTINO:</span>
-            <div id="lastNumberBadge" class="px-4 md:px-8 py-3 md:py-4 rounded-2xl bg-[#2a0c0c] text-white font-bebas text-3xl md:text-4xl flex items-center justify-center border-2 border-red-500/80 drop-shadow-md w-full min-h-[60px] md:min-w-[200px]">
-                --
+        <div id="resultPreviewCard"
+            class="flex flex-col items-center gap-3 md:gap-5 px-6 md:px-8 py-6 rounded-[1.5rem] bg-[#0c0c0c] border border-red-600 w-full max-w-[600px] justify-center shadow-[0_0_40px_rgba(255,0,0,0.4)] transform scale-95 transition-all duration-500 cursor-default text-center">
+            <div class="flex flex-col md:flex-row items-center gap-3 md:gap-5 w-full justify-center">
+                <span
+                    class="text-xl md:text-3xl uppercase text-[#64748b] font-bold font-bebas tracking-widest pt-1">DESTINO:</span>
+                <div id="lastNumberBadge"
+                    class="px-4 md:px-8 py-3 md:py-4 rounded-2xl bg-[#2a0c0c] text-white font-bebas text-3xl md:text-4xl flex items-center justify-center border-2 border-red-500/80 drop-shadow-md w-full min-h-[60px] md:min-w-[200px]">
+                    --
+                </div>
             </div>
+            <p id="resultDescription"
+                class="text-gray-200 font-special-elite text-sm md:text-xl mt-4 md:mt-6 max-w-[550px] leading-relaxed drop-shadow-[0_2px_8px_rgba(255,0,0,0.8)] min-h-[80px]">
+                --
+            </p>
         </div>
     </div>
 
@@ -182,7 +213,7 @@
                 const now = this.ctx.currentTime;
                 const osc = this.ctx.createOscillator();
                 const gain = this.ctx.createGain();
-                
+
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(320, now);
                 osc.frequency.exponentialRampToValueAtTime(90, now + 0.12);
@@ -205,6 +236,42 @@
         centerLogoImg.onload = () => {
             if (!state.isSpinning) drawWheel();
         };
+
+        const DESTINY_RULES = {
+            "TODO O NADA": "Puedes quedarte libre o volver a girar; si vuelves a girar debes cumplir lo que salga",
+            "TRIPLE 7": "Elige tres personas. Cada una te hace una pregunta y solo te hace una pregunta y solo puedes esquivar una",
+            "LA MAQUINA DECIDE": "Chat propone dos opciones y una moneda/ruleta decide cuál haces",
+            "ULTIMA PALABRA": "Cuenta una discusión absurda que hayas tenido y qué última frase soltaste",
+            "5 SEGUNDOS": "Te hacen una pregunta y solo tienes cinco segundos para contestar",
+            "SIN NOMBRES": "Describe a alguien únicamente con tres emojis y una frase",
+            "SIN DERECHO A REPLICA": "Tienes 20 segundos para explicar una situación; después otra persona cuenta como la vio ella",
+            "SIN DERECHOS A REPLICA": "Tienes 20 segundos para explicar una situación; después otra persona cuenta como la vio ella",
+            "ABOGADO DEL DIABLO": "Tienes que defender durante 30 segundos una situación que normalmente criticarías",
+            "EL TESTIGO": "Elige a alguien que estuviera presente en una historia tuya para que cuente su versión",
+            "FICHA NEGRA": "Responde una pregunta difícil o acepta un castigo aleatorio",
+            "FICHA DORADA": "Te salvas y puedes guardar la ficha para cancelar una casilla futura",
+            "ROBO DE FICHA": "Puedes quitarle el comodín a otro participante",
+            "NO DIRE QUIEN": "Cuenta algo que te hizo alguien sin revelar su identidad",
+            "LA SOSPECHA": "Di una situación en la que sospechaste que alguien no te estaba contando toda la verdad",
+            "TE LO QUERIA DECIR": "Di algo que llevas tiempo queriendo decirle a alguien del grupo, sin necesidad de que sea negativo",
+            "ARCHIVO CLASIFICADO": "Elige entre tres sobres preparados por el host; A,B o C. Cada uno contiene una pregunta distinta",
+            "CASUALIDAD": "Cuenta la coincidencia más sospechosa que te haya pasado con alguien",
+            "NOMBRE EN CLAVE": "Piensa en alguien y dale 3 pistas sin decir quién es. Los demás intentan adivinar",
+            "EL MENSAJE BORRADO": "Di algo que alguna vez escribiste para alguien pero decidiste borrar antes de enviarlo",
+            "SIN CONTEXTO": "Suelta una frase real que hayas dicho o recibido sin explicar la historia. Los demás inventan qué pasó",
+            "QUIEN DIJO ESO": "El host lee una frase enviada previamente y deben descubrir quién la dijo",
+            "CAMBIA MI OPINION": "Di algo que antes pensabas de una persona y que ahora ves completamente diferente",
+            "LA MASCARA CAE": "Revela una verdad oculta o cuenta cuál fue la primera impresión equivocada que alguien tuvo de ti"
+        };
+
+        function normalizeStr(s) {
+            return s.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[¿?]/g, "").trim();
+        }
+
+        const DESTINY_RULES_NORM = {};
+        for (const [key, val] of Object.entries(DESTINY_RULES)) {
+            DESTINY_RULES_NORM[normalizeStr(key)] = val;
+        }
 
         // 18 Options from the image
         const WHEEL_ORDER = [
@@ -251,7 +318,7 @@
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
             const outerRadius = 340;
-            const innerRadius = 90; 
+            const innerRadius = 90;
 
             ctx.save();
             ctx.translate(centerX, centerY);
@@ -260,7 +327,7 @@
             for (let i = 0; i < numPockets; i++) {
                 const startA = i * pocketAngle - pocketAngle / 2;
                 const endA = startA + pocketAngle;
-                
+
                 // Colors: Deep Blood Red and Pure Black
                 const isRed = i % 2 === 0;
                 ctx.fillStyle = isRed ? '#700202' : '#0a0a0a';
@@ -294,7 +361,7 @@
                 ctx.font = '34px "Bebas Neue", sans-serif';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                
+
                 // Multi-line text splitting
                 const words = WHEEL_ORDER[i].split(' ');
                 let line1 = '', line2 = '', line3 = '';
@@ -328,8 +395,8 @@
                     ctx.fillText(line2, 0, 0);
                     ctx.fillText(line3, 0, lineH);
                 } else if (line2) {
-                    ctx.fillText(line1, 0, -lineH/2);
-                    ctx.fillText(line2, 0, lineH/2);
+                    ctx.fillText(line1, 0, -lineH / 2);
+                    ctx.fillText(line2, 0, lineH / 2);
                 } else {
                     ctx.fillText(line1, 0, 0);
                 }
@@ -365,7 +432,7 @@
             ctx.rotate(-state.wheelAngle);
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            
+
             // Center Image Logo
             if (centerLogoImg.complete && centerLogoImg.naturalWidth > 0) {
                 const imgRatio = centerLogoImg.naturalWidth / centerLogoImg.naturalHeight;
@@ -378,12 +445,12 @@
                     drawH = maxDim;
                     drawW = maxDim * imgRatio;
                 }
-                
+
                 ctx.shadowColor = 'rgba(0,0,0,0.8)';
                 ctx.shadowBlur = 15;
-                ctx.drawImage(centerLogoImg, -drawW/2, -drawH/2, drawW, drawH);
+                ctx.drawImage(centerLogoImg, -drawW / 2, -drawH / 2, drawW, drawH);
             }
-            
+
             ctx.restore();
 
             ctx.restore(); // Unrotate global canvas
@@ -417,7 +484,7 @@
             if (state.isSpinning) return;
 
             state.isSpinning = true;
-            
+
             const modal = document.getElementById('resultModal');
             const card = document.getElementById('resultPreviewCard');
             modal.classList.remove('opacity-100', 'pointer-events-auto');
@@ -451,7 +518,7 @@
                     state.ballState = 'BOUNCING';
                     state.ballAngle += state.ballSpeed;
                     state.ballSpeed *= 0.985;
-                    
+
                     state.ballRadiusFactor = 0.88 - ((progress - 0.65) / 0.27) * 0.24;
 
                     const currentFret = Math.floor(Math.abs(state.ballAngle - state.wheelAngle) / pocketAngle) % numPockets;
@@ -461,22 +528,22 @@
                     }
                 } else {
                     state.ballState = 'SETTLED';
-                    
+
                     if (state.targetPocketIndex === null) {
                         let relAngle = (state.ballAngle - state.wheelAngle) % (Math.PI * 2);
                         if (relAngle < 0) relAngle += Math.PI * 2;
                         state.targetPocketIndex = Math.round(relAngle / pocketAngle) % numPockets;
                     }
-                    
-                    state.ballAngle += state.wheelSpeed; 
-                    
+
+                    state.ballAngle += state.wheelSpeed;
+
                     const targetAngleOnWheel = state.targetPocketIndex * pocketAngle;
                     const finalAngle = state.wheelAngle + targetAngleOnWheel;
-                    
+
                     let angleDiff = (finalAngle - state.ballAngle) % (Math.PI * 2);
                     if (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
                     if (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
-                    
+
                     state.ballAngle += angleDiff * 0.15;
                     state.ballRadiusFactor = 0.64;
 
@@ -501,6 +568,25 @@
 
             const badge = document.getElementById('lastNumberBadge');
             badge.textContent = winningText;
+
+            const descElem = document.getElementById('resultDescription');
+            const normKey = normalizeStr(winningText);
+            const fullText = DESTINY_RULES_NORM[normKey] || "El destino ha hablado.";
+
+            // Awesome Typewriter effect
+            descElem.innerHTML = "";
+            let i = 0;
+            if (window.typeWriterInterval) clearInterval(window.typeWriterInterval);
+
+            window.typeWriterInterval = setInterval(() => {
+                if (i < fullText.length) {
+                    descElem.innerHTML = fullText.substring(0, i + 1) + '<span class="animate-pulse text-red-500 font-bold">_</span>';
+                    i++;
+                } else {
+                    clearInterval(window.typeWriterInterval);
+                    descElem.innerHTML = fullText + '<span class="text-red-600 font-bold">.</span>';
+                }
+            }, 35); // Fast, snappy typing speed
 
             const modal = document.getElementById('resultModal');
             const card = document.getElementById('resultPreviewCard');
